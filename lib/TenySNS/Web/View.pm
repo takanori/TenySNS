@@ -45,7 +45,7 @@ sub make_instance {
         } ) : () ),
         %$view_conf
     });
-    return $view;
+    $view;
 }
 
 1;

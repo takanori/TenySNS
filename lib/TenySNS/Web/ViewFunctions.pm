@@ -11,7 +11,7 @@ our @EXPORT = get_public_functions();
 sub commify {
     local $_  = shift;
     1 while s/((?:\A|[^.0-9])[-+]?\d+)(\d{3})/$1,$2/s;
-    return $_;
+    $_;
 }
 
 sub c { TenySNS->context() }
@@ -27,7 +27,7 @@ sub uri_for { TenySNS->context()->uri_for(@_) }
             my $fullpath = File::Spec->catfile($c->base_dir(), $fname);
             $static_file_cache{$fname} = (stat $fullpath)[9];
         }
-        return $c->uri_for(
+        $c->uri_for(
             $fname, {
                 't' => $static_file_cache{$fname} || 0
             }

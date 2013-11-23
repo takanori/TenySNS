@@ -6,13 +6,18 @@ use Amon2::Web::Dispatcher::RouterBoom;
 
 any '/' => sub {
     my ($c) = @_;
-    return $c->render('index.tx');
+    $c->render('index.tx');
 };
 
-post '/account/logout' => sub {
+get '/login' => sub {
+    my ($c) = @_;
+    $c->render('login.tx');
+};
+
+post '/logout' => sub {
     my ($c) = @_;
     $c->session->expire();
-    return $c->redirect('/');
+    $c->redirect('/');
 };
 
 1;

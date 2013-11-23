@@ -8,7 +8,7 @@ use File::Spec;
 # dispatcher
 use TenySNS::Web::Dispatcher;
 sub dispatch {
-    return (TenySNS::Web::Dispatcher->dispatch($_[0]) or die "response is not generated");
+    TenySNS::Web::Dispatcher->dispatch($_[0]) or die "response is not generated";
 }
 
 # load plugins
@@ -50,8 +50,6 @@ __PACKAGE__->add_trigger(
 __PACKAGE__->add_trigger(
     BEFORE_DISPATCH => sub {
         my ( $c ) = @_;
-        # ...
-        return;
     },
 );
 
