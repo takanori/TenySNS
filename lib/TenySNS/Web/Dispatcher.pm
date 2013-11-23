@@ -52,7 +52,7 @@ get '/api/tweets' => sub {
             text       => $_->text,
             created_at => $_->created_at->epoch,
         }
-    } $c->db->search('tweet');
+    } $c->db->search('tweet' => {}, { order_by => 'created_at DESC' });
 
     $c->render_json({
         status => 200,

@@ -4,7 +4,13 @@
 
 <main>
   <div>
-    Contents Here
+    <div role="tweet-form">
+      <textarea id="tweet-text" cols="30" rows="10"></textarea>
+      <button id="tweet-button">Tweet</button>
+    </form>
+  </div>
+
+  <div id="tweets">
   </div>
 </main>
 <div id="right-column">
@@ -28,5 +34,42 @@
   </div>
 : }
 </div>
+
+<script>
+(function () {
+  var csrf_token = '<: $csrf_token :>';
+
+  $.get(
+    '/api/tweets',
+    {},
+    function (data) {
+      var tweets = data.tweets;
+      var $tweets = $('#tweets');
+      var i, len;
+      for (i=0, len=tweets.length; i<len; i++) {
+        var $p = $('<p>').text(tweets[i].text);
+        $('<div>').append($p).appendTo($tweets);
+      }
+    }
+  );
+
+  $('#tweet-button').click(function () {
+    var text = $('#tweet-text').val();
+    $.post(
+      '/api/tweets',
+      { text: text, csrf_token: csrf_token },
+      function (data) {
+        var tweet = data.tweet;
+        var $p = $('<p>').text(tweet.text);
+        console.log($p);
+        $('<div>').append($p).prependTo($('#tweets'));
+      },
+      'json'
+      );
+    return false;
+  });
+
+})();
+</script>
 
 : }
