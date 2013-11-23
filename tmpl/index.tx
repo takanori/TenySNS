@@ -56,7 +56,12 @@
   );
 
   $('#tweet-button').click(function () {
-    var text = $('#tweet-text').val();
+    var $text = $('#tweet-text')
+    var text = $text.val();
+
+    $text.val('');
+    $text.focus();
+
     $.post(
       '/api/tweets',
       { text: text, csrf_token: csrf_token },
