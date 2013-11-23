@@ -23,6 +23,11 @@
   <body>
     <header>
       <h1>Teny SNS</h1>
+: if $user {
+        <form id="logout-form" action="<: uri_for('/logout') :>" method="POST">
+        </form>
+        <a id="logout-link" href="#logout">Logout</a>
+: }
     </header>
     <: block content -> { } :>
     <footer>

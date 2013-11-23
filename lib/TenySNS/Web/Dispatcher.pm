@@ -8,8 +8,11 @@ use Data::Dumper;
 
 any '/' => sub {
     my ($c) = @_;
-    say(Dumper($c->session->get('user_id')));
-    $c->render('index.tx');
+    my $user = $c->db->single(user => { id => $c->session->get('user_id') });
+    $c->render('index.tx', {
+        user => $user,
+        csrf_token => $c->get_csrf_defender_token,
+    });
 };
 
 post '/signup' => sub {

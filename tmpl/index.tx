@@ -8,6 +8,7 @@
   </div>
 </main>
 <div id="right-column">
+: if !$user {
   <div>
     <h3>Login</h3>
     <form role="login-form" action="<: uri_for('/login') :>" method="POST">
@@ -25,6 +26,7 @@
       <input type="submit">
     </form>
   </div>
+: }
 </div>
 
 : }
