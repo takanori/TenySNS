@@ -40,7 +40,7 @@ sub auth_user {
     my $user = $self->single(user => { email => $email });
 
     return unless $user;
-    return unless $user->password == _hash_password($password, $user->salt);
+    return unless $user->password eq _hash_password($password, $user->salt);
 
     $user;
 }

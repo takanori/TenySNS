@@ -8,6 +8,7 @@ use Data::Dumper;
 
 any '/' => sub {
     my ($c) = @_;
+    say(Dumper($c->session->get('user_id')));
     $c->render('index.tx');
 };
 
@@ -17,7 +18,9 @@ post '/signup' => sub {
     my $email = $c->req->param('email');
     my $password = $c->req->param('password');
     my $user = $c->db->create_user($name, $email, $password);
-    say(Dumper($user));
+
+    $c->session->set(user_id => $user->id);
+
     $c->redirect('/');
 };
 
@@ -26,7 +29,9 @@ post '/login' => sub {
     my $email = $c->req->param('email');
     my $password = $c->req->param('password');
     my $user = $c->db->auth_user($email, $password);
-    say(Dumper($user));
+
+    $c->session->set(user_id => $user->id);
+
     $c->redirect('/');
 };
 
