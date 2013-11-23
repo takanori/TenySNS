@@ -1,4 +1,9 @@
-CREATE TABLE IF NOT EXISTS member (
-    id           INTEGER NOT NULL PRIMARY KEY,
-    name         VARCHAR(255)
+CREATE TABLE IF NOT EXISTS user (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT,
+  email TEXT,
+  password TEXT,
+  salt TEXT,
+  bio TEXT,
+  created_at INTEGER
 );
