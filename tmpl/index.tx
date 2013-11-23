@@ -3,12 +3,14 @@
 : override content -> {
 
 <main>
+: if $user {
   <div>
     <div role="tweet-form">
       <textarea id="tweet-text" cols="30" rows="10"></textarea>
       <button id="tweet-button">Tweet</button>
     </form>
   </div>
+: }
 
   <div id="tweets">
   </div>
