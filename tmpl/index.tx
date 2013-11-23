@@ -1,7 +1,30 @@
 : cascade "include/layout.tx"
 
-: override main -> {
+: override content -> {
 
-<h1>Hello, world!</h1>
+<main>
+  <div>
+    Contents Here
+  </div>
+</main>
+<div id="right-column">
+  <div>
+    <h3>Login</h3>
+    <form role="login-form" action="<: uri_for('/login') :>" method="POST">
+      <input type="text" name="email" placeholder="Email address">
+      <input type="password" name="password" placeholder="password">
+      <input type="submit">
+    </form>
+  </div>
+  <div>
+    <h3>Sign up</h3>
+    <form role="signup-form" action="<: uri_for('/signup') :>" method="POST">
+      <input type="text" name="name" placeholder="Name">
+      <input type="text" name="email" placeholder="Email address">
+      <input type="password" name="password" placeholder="password">
+      <input type="submit">
+    </form>
+  </div>
+</div>
 
 : }

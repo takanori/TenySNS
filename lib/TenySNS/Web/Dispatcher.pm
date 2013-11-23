@@ -9,9 +9,14 @@ any '/' => sub {
     $c->render('index.tx');
 };
 
-get '/login' => sub {
+post '/signup' => sub {
     my ($c) = @_;
-    $c->render('login.tx');
+    $c->redirect('/');
+};
+
+post '/login' => sub {
+    my ($c) = @_;
+    $c->redirect('/');
 };
 
 post '/logout' => sub {

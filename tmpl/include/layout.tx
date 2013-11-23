@@ -23,11 +23,8 @@
   <body>
     <header>
       <h1>Teny SNS</h1>
-      <a href="<: uri_for('/login') :>">Login</a>
     </header>
-    <main>
-      <: block main -> { } :>
-    </main>
+    <: block content -> { } :>
     <footer>
     </footer>
   </body>
