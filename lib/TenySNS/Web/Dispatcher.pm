@@ -44,4 +44,43 @@ post '/logout' => sub {
     $c->redirect('/');
 };
 
+get '/api/tweets' => sub {
+    my ($c) = @_;
+    my @tweets = map {
+        +{
+            id         => $_->id,
+            text       => $_->text,
+            created_at => $_->created_at->epoch,
+        }
+    } $c->db->search('tweet');
+
+    $c->render_json({
+        status => 200,
+        tweets => \@tweets,
+    });
+};
+
+post '/api/tweets' => sub {
+    my ($c) = @_;
+    my $user_id = $c->session->get('user_id');
+    my $text = $c->req->param('text');
+
+    return $c->render_json({ status => 401, error => 'Cannot authorize' }) unless $user_id;
+    return $c->render_json({ status => 403, error => 'Empty text' }) unless $text;
+
+    my $tweet = $c->db->insert(tweet => {
+        user_id    => $user_id,
+        text       => $text,
+        created_at => Time::Piece->new,
+    });
+
+    $c->render_json({
+        status => 200,
+        tweet  => {
+            id   => $tweet->id,
+            text => $tweet->text,
+        },
+    });
+};
+
 1;
