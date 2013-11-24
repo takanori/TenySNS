@@ -12,8 +12,14 @@
   </div>
 : }
 
+  <h3>Tweets</h3>
   <div id="tweets">
   </div>
+
+  <h3>Users</h3>
+  <div id="users">
+  </div>
+
 </main>
 <div id="right-column">
 : if !$user {
@@ -51,6 +57,20 @@
       for (i=0, len=tweets.length; i<len; i++) {
         var $p = $('<p>').text(tweets[i].text);
         $('<div>').append($p).appendTo($tweets);
+      }
+    }
+  );
+
+  $.get(
+    '/api/users',
+    {},
+    function (data) {
+      var users = data.users;
+      var $users = $('#users');
+      var i, len;
+      for (i=0, len=users.length; i<len; i++) {
+        var $p = $('<p>').text(users[i].name);
+        $('<div>').append($p).appendTo($users);
       }
     }
   );

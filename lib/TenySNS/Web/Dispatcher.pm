@@ -52,7 +52,7 @@ get '/api/tweets' => sub {
             text       => $_->text,
             created_at => $_->created_at->epoch,
         }
-    } $c->db->search('tweet' => {}, { order_by => 'created_at DESC' });
+    } $c->db->search(tweet => {}, { order_by => 'created_at DESC' });
 
     $c->render_json({
         status => 200,
@@ -80,6 +80,24 @@ post '/api/tweets' => sub {
             id   => $tweet->id,
             text => $tweet->text,
         },
+    });
+};
+
+get '/api/users' => sub {
+    my ($c) = @_;
+    my @users = map {
+        +{
+            id        => $_->id,
+            name      => $_->name,
+            email     => $_->email,
+            bio       => $_->bio,
+            create_at => $_->created_at->epoch,
+        }
+    } $c->db->search(user => {}, {});
+
+    $c->render_json({
+        status => 200,
+        users  => \@users,
     });
 };
 
