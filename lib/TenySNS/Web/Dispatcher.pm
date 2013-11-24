@@ -101,4 +101,21 @@ get '/api/users' => sub {
     });
 };
 
+get '/api/users/:id' => sub {
+    my ($c, $args) = @_;
+    my $id = $args->{id};
+    my $user = $c->db->single(user => { id => $id });
+
+    $c->render_json({
+        status => 200,
+        user   => {
+            id         => $user->id,
+            name       => $user->name,
+            email      => $user->email,
+            bio        => $user->bio,
+            created_at => $user->created_at->epoch,
+        }
+    });
+};
+
 1;
