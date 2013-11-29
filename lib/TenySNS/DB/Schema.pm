@@ -32,4 +32,12 @@ table {
     deflate qr/.+_at/ => $time_deflate;
 };
 
+table {
+    name 'follow';
+    pk 'id';
+    columns qw/id follower_id followee_id created_at/;
+    inflate qr/.+_at/ => $time_inflate;
+    deflate qr/.+_at/ => $time_deflate;
+};
+
 1;

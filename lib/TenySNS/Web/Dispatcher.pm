@@ -101,6 +101,45 @@ get '/api/users' => sub {
     });
 };
 
+get '/api/users/me' => sub {
+    my ($c, $args) = @_;
+    my $id = $c->session->get('user_id');
+
+    return $c->render_json({ status => 401, error => 'Cannot authorize' }) unless $id;
+
+    my $user = $c->db->single(user => { id => $id });
+
+    $c->render_json({
+        status => 200,
+        user   => {
+            id         => $user->id,
+            name       => $user->name,
+            email      => $user->email,
+            bio        => $user->bio,
+            created_at => $user->created_at->epoch,
+        }
+    });
+};
+
+get '/api/users/me/followers' => sub {
+    my ($c) = @_;
+    my $id = $c->session->get('user_id');
+
+    return $c->render_json({ status => 401, error => 'Cannot authorize' }) unless $id;
+
+    my @followers = $c->db->search_by_sql(q{
+        SELECT
+            user.*
+        FROM user, follow
+        WHERE follow.followee_id = ? AND user.id = follow.follower_id
+    }, [ $id ]);
+
+    $c->render_json({
+        status => 200,
+        followers => \@followers,
+    });
+};
+
 get '/api/users/:id' => sub {
     my ($c, $args) = @_;
     my $id = $args->{id};
@@ -115,6 +154,28 @@ get '/api/users/:id' => sub {
             bio        => $user->bio,
             created_at => $user->created_at->epoch,
         }
+    });
+};
+
+post '/api/users/:id/follow' => sub {
+    my ($c, $args) = @_;
+    my $follower_id = $c->session->get('user_id');
+    my $followee_id = $args->{id};
+
+    return $c->render_json({ status => 401, error => 'Cannot authorize' }) unless $follower_id;
+
+    my $followee = $c->db->single(user => { id => $followee_id });
+
+    return $c->render_json({ status => 403, error => 'Such user doesn\'t exist' }) unless $followee;
+
+    $c->db->insert(follow => {
+        follower_id => $follower_id,
+        followee_id => $followee_id,
+        created_at  => Time::Piece->new,
+    });
+
+    $c->render_json({
+        status => 200,
     });
 };
 

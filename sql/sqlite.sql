@@ -14,3 +14,10 @@ CREATE TABLE IF NOT EXISTS tweet (
   text TEXT,
   created_at INTEGER
 );
+
+CREATE TABLE IF NOT EXISTS follow (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  follower_id INTEGER,
+  followee_id INTEGER,
+  created_at INTEGER
+);
