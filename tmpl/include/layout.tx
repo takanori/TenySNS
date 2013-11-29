@@ -22,14 +22,24 @@
   </head>
   <body>
     <header>
-      <h1>Teny SNS</h1>
-: if $user {
-        <form id="logout-form" action="<: uri_for('/logout') :>" method="POST">
-        </form>
-        <a id="logout-link" href="#logout">Logout</a>
-: }
+      <div class="constraint">
+        <div class="header-main">
+          <h1>Teny SNS</h1>
+        </div>
+        <div class="header-nav">
+  : if $user {
+          <form id="logout-form" action="<: uri_for('/logout') :>" method="POST">
+          </form>
+          <a id="logout-link" href="#logout">Logout</a>
+  : }
+        </div>
+      </div>
     </header>
-    <: block content -> { } :>
+    <div class="constraint">
+      <div class="content">
+        <: block content -> { } :>
+      </div>
+    </div>
     <footer>
     </footer>
   </body>
