@@ -65,8 +65,8 @@ post '/api/tweets' => sub {
     my $user_id = $c->session->get('user_id');
     my $text = $c->req->param('text');
 
-    return $c->render_json({ status => 401, error => 'Cannot authorize' }) unless $user_id;
-    return $c->render_json({ status => 403, error => 'Empty text' }) unless $text;
+    return $c->render_json({ status => 403, error => 'Not authorized' }) unless $user_id;
+    return $c->render_json({ status => 403, error => 'Invalid query' }) unless $text;
 
     my $tweet = $c->db->insert(tweet => {
         user_id    => $user_id,
@@ -105,7 +105,7 @@ get '/api/users/me' => sub {
     my ($c, $args) = @_;
     my $id = $c->session->get('user_id');
 
-    return $c->render_json({ status => 401, error => 'Cannot authorize' }) unless $id;
+    return $c->render_json({ status => 403, error => 'Not authorized' }) unless $id;
 
     my $user = $c->db->single(user => { id => $id });
 
@@ -125,7 +125,7 @@ get '/api/users/me/followers' => sub {
     my ($c) = @_;
     my $id = $c->session->get('user_id');
 
-    return $c->render_json({ status => 401, error => 'Cannot authorize' }) unless $id;
+    return $c->render_json({ status => 403, error => 'Not authorized' }) unless $id;
 
     my @followers = $c->db->search_by_sql(q{
         SELECT
@@ -162,11 +162,11 @@ post '/api/users/:id/follow' => sub {
     my $follower_id = $c->session->get('user_id');
     my $followee_id = $args->{id};
 
-    return $c->render_json({ status => 401, error => 'Cannot authorize' }) unless $follower_id;
+    return $c->render_json({ status => 403, error => 'Not authorized' }) unless $follower_id;
 
     my $followee = $c->db->single(user => { id => $followee_id });
 
-    return $c->render_json({ status => 403, error => 'Such user doesn\'t exist' }) unless $followee;
+    return $c->render_json({ status => 404, error => 'Such user doesn\'t exist' }) unless $followee;
 
     $c->db->insert(follow => {
         follower_id => $follower_id,
