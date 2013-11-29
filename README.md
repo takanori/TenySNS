@@ -1,5 +1,7 @@
 # Teny SNS
 
+Sample Web application using Amon2
+
 ## Setup
 
 ### Development
