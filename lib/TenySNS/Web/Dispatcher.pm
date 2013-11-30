@@ -46,13 +46,7 @@ post '/logout' => sub {
 
 get '/api/tweets' => sub {
     my ($c) = @_;
-    my @tweets = map {
-        +{
-            id         => $_->id,
-            text       => $_->text,
-            created_at => $_->created_at->epoch,
-        }
-    } $c->db->search(tweet => {}, { order_by => 'created_at DESC' });
+    my @tweets = $c->db->search_tweets;
 
     $c->render_json({
         status => 200,
@@ -74,11 +68,18 @@ post '/api/tweets' => sub {
         created_at => Time::Piece->new,
     });
 
+    my $user = $c->db->single(user => { id => $user_id });
+
     $c->render_json({
         status => 200,
         tweet  => {
-            id   => $tweet->id,
-            text => $tweet->text,
+            id         => $tweet->id,
+            text       => $tweet->text,
+            created_at => $tweet->created_at->epoch,
+            user       => {
+                id         => $user->id,
+                name       => $user->name,
+            }
         },
     });
 };

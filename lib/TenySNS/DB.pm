@@ -45,4 +45,33 @@ sub auth_user {
     $user;
 }
 
+sub search_tweets {
+    my ($self) = @_;
+
+    my @tweets = $self->search_by_sql(q{
+        SELECT
+            tweet.id,
+            tweet.text,
+            tweet.created_at,
+            user.id AS user_id,
+            user.name AS user_name
+        FROM tweet, user
+        WHERE tweet.user_id = user.id
+        ORDER BY tweet.id DESC
+        LIMIT 100
+    });
+
+    map {
+        +{
+            id         => $_->id,
+            text       => $_->text,
+            created_at => $_->created_at->epoch,
+            user       => {
+                id         => $_->user_id,
+                name       => $_->user_name,
+            }
+        }
+    } @tweets;
+}
+
 1;
