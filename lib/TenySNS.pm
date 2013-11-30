@@ -30,6 +30,11 @@ sub db {
     $c->{db};
 }
 
+sub current_user {
+    my ($c) = @_;
+    $c->db->single(user => { id => $c->session->get('user_id') });
+}
+
 1;
 __END__
 
