@@ -1,41 +1,32 @@
-if (typeof(window.console) == "undefined") { console = {}; console.log = console.warn = console.error = function(a) {}; }
-
 $(function () {
-    $.get(
-        '/api/tweets',
-        {},
-        function (data) {
-            var tweets = data.tweets;
-            var $tweets = $('#tweets');
-            var i, len;
-            for (i=0, len=tweets.length; i<len; i++) {
-                var $p = $('<p>').text(tweets[i].text);
-                $('<div>').append($p).appendTo($tweets);
-            }
-        }
-    );
-
-    $.get(
-        '/api/users',
-        {},
-        function (data) {
-            var users = data.users;
-            var $users = $('#users');
-            var i, len;
-            for (i=0, len=users.length; i<len; i++) {
-                var $p = $('<p>').text(users[i].name);
-                $('<div>').append($p).appendTo($users);
-            }
-        }
-    );
-
-
     $('#logout-link').click(function () {
         $('#logout-form').submit();
     });
 });
 
-var MainControl = function ($scope) {
+var MainControl = function ($scope, $http) {
+
+    $scope.tweets = [];
+    $scope.users = [];
+
+    $http({
+        url: '/api/tweets',
+        method: 'GET',
+        data: {},
+    }).success(function (data) {
+        $scope.tweets = data.tweets;
+        console.log(data);
+    });
+
+    $http({
+        url: '/api/users',
+        method: 'GET',
+        data: {},
+    }).success(function (data) {
+        $scope.users = data.users;
+        console.log(data);
+    });
+
     $scope.tweet = function () {
         var $text = $('#tweet-text')
         var text = $text.val();
