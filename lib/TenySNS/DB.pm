@@ -45,6 +45,22 @@ sub auth_user {
     $user;
 }
 
+sub search_users {
+    my ($self) = @_;
+
+    my @users = map {
+        +{
+            id        => $_->id,
+            name      => $_->name,
+            email     => $_->email,
+            bio       => $_->bio,
+            create_at => $_->created_at->epoch,
+        }
+    } $self->search(user => {}, {});
+
+    @users;
+}
+
 sub search_tweets {
     my ($self) = @_;
 

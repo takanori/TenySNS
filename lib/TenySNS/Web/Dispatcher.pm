@@ -84,15 +84,7 @@ post '/api/tweets' => sub {
 
 get '/api/users' => sub {
     my ($c) = @_;
-    my @users = map {
-        +{
-            id        => $_->id,
-            name      => $_->name,
-            email     => $_->email,
-            bio       => $_->bio,
-            create_at => $_->created_at->epoch,
-        }
-    } $c->db->search(user => {}, {});
+    my @users = $c->db->search_users;
 
     $c->render_json({
         status => 200,
@@ -100,11 +92,12 @@ get '/api/users' => sub {
     });
 };
 
-get '/api/users/me' => sub {
+get '/api/users/:id' => sub {
     my ($c, $args) = @_;
-    my $user = $c->current_user;
+    my $id = $args->{id};
+    my $user = $id eq 'me' ? $c->current_user : $c->db->single(user => { id => $id });
 
-    return $c->render_json({ status => 403, error => 'Not authorized' }) unless $user;
+    return $c->render_json({ status => 403, error => 'Invalid query' }) unless $user;
 
     $c->render_json({
         status => 200,
@@ -118,9 +111,10 @@ get '/api/users/me' => sub {
     });
 };
 
-get '/api/users/me/followers' => sub {
-    my ($c) = @_;
-    my $user = $c->current_user;
+get '/api/users/:id/followers' => sub {
+    my ($c, $args) = @_;
+    my $id = $args->{id};
+    my $user = $id eq 'me' ? $c->current_user : $c->db->single(user => { id => $id });
 
     return $c->render_json({ status => 403, error => 'Not authorized' }) unless $user;
 
@@ -137,30 +131,13 @@ get '/api/users/me/followers' => sub {
     });
 };
 
-get '/api/users/:id' => sub {
-    my ($c, $args) = @_;
-    my $id = $args->{id};
-    my $user = $c->db->single(user => { id => $id });
-
-    $c->render_json({
-        status => 200,
-        user   => {
-            id         => $user->id,
-            name       => $user->name,
-            email      => $user->email,
-            bio        => $user->bio,
-            created_at => $user->created_at->epoch,
-        }
-    });
-};
-
 post '/api/users/:id/follow' => sub {
     my ($c, $args) = @_;
     my $user = $c->current_user;
+    return $c->render_json({ status => 403, error => 'Not authorized' }) unless $user;
+
     my $follower_id = $user->id;
     my $followee_id = $args->{id};
-
-    return $c->render_json({ status => 403, error => 'Not authorized' }) unless $follower_id;
 
     my $followee = $c->db->single(user => { id => $followee_id });
 
