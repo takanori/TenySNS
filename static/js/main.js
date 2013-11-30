@@ -4,7 +4,17 @@ $(function () {
     });
 });
 
-var MainControl = function ($scope, $http) {
+angular.module('sns', ['ngRoute'])
+.config(function ($routeProvider) {
+    $routeProvider
+    .when('/', {
+        controller: 'MainControl',
+        templateUrl: 'static/html/index.html',
+    }).otherwise({
+        redirectTo: '/',
+    });
+})
+.controller('MainControl', function ($scope, $http) {
 
     $scope.tweets = [];
     $scope.users = [];
@@ -28,23 +38,18 @@ var MainControl = function ($scope, $http) {
     });
 
     $scope.tweet = function () {
-        var $text = $('#tweet-text')
-        var text = $text.val();
+        $http({
+            url: '/api/tweets',
+            method: 'POST',
+            params: { text: $scope.draft, csrf_token: App.csrf_token },
+        }).success(function (data) {
+            $scope.tweets.unshift(data.tweet);
+            console.log(data);
+        });
 
-        $text.val('');
-        $text.focus();
+        $scope.draft = '';
+        $('#tweet-text').focus();
 
-        $.post(
-            '/api/tweets',
-            { text: text, csrf_token: App.csrf_token },
-            function (data) {
-                var tweet = data.tweet;
-                var $p = $('<p>').text(tweet.text);
-                console.log($p);
-                $('<div>').append($p).prependTo($('#tweets'));
-            },
-            'json'
-        );
         return false;
     };
-};
+});

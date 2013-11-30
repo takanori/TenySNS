@@ -1,5 +1,5 @@
 <!doctype html>
-<html ng-app>
+<html ng-app="sns">
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title><: $title || 'TenySNS' :></title>
@@ -15,6 +15,7 @@
     <script src="<: uri_for('/static/js/micro-location.js') :>"></script>
     <script src="<: uri_for('/static/js/micro_dispatcher.js') :>"></script>
     <script src="<: uri_for('/static/js/angular.min.js') :>"></script>
+    <script src="<: uri_for('/static/js/angular-route.min.js') :>"></script>
     <link href="<: static_file('/static/css/main.css') :>" rel="stylesheet" type="text/css" media="screen" />
     <script src="<: static_file('/static/js/main.js') :>"></script>
     <!--[if lt IE 9]>

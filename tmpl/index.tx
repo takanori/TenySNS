@@ -2,30 +2,7 @@
 
 : override content -> {
 
-<main ng-controller="MainControl">
-: if $user {
-  <div>
-    <form role="tweet-form" ng-submit="tweet()">
-      <textarea id="tweet-text" cols="30" rows="10"></textarea>
-      <button id="tweet-button">Tweet</button>
-    </form>
-  </div>
-: }
-
-  <h3>Tweets</h3>
-  <div id="tweets">
-    <div ng-repeat="tweet in tweets">
-      <p>{{ tweet.text }}</p>
-    </div>
-  </div>
-
-  <h3>Users</h3>
-  <div id="users">
-    <div ng-repeat="user in users">
-      <p>{{ user.name }}</p>
-    </div>
-  </div>
-
+<main ng-view>
 </main>
 <div class="right-column">
 : if $user {
