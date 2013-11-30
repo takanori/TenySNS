@@ -10,11 +10,13 @@ angular.module('sns', ['ngRoute'])
     .when('/', {
         controller: 'MainControl',
         templateUrl: 'static/html/index.html',
+    }).when('/users/:id', {
+        controller: 'UserControl',
+        templateUrl: 'static/html/user.html',
     }).otherwise({
         redirectTo: '/',
     });
-})
-.controller('MainControl', function ($scope, $http) {
+}).controller('MainControl', function ($scope, $http) {
 
     $scope.tweets = [];
     $scope.users = [];
@@ -38,6 +40,7 @@ angular.module('sns', ['ngRoute'])
     });
 
     $scope.tweet = function () {
+
         $http({
             url: '/api/tweets',
             method: 'POST',
@@ -52,4 +55,17 @@ angular.module('sns', ['ngRoute'])
 
         return false;
     };
+}).controller('UserControl', function ($scope, $http, $routeParams) {
+    $scope.user = null;
+
+    var userBaseUrl = '/api/users/' + $routeParams.id;
+
+    $http({
+        url: userBaseUrl,
+        method: 'GET',
+    }).success(function (data) {
+        $scope.user = data.user;
+        console.log(data);
+    });
+
 });

@@ -13,8 +13,8 @@
   </div>
   <div>
     <ul>
-      <li><a href="">Follows</a></li>
-      <li><a href="">Followers</a></li>
+      <li><a href="#/follows">Follows</a></li>
+      <li><a href="#/followers">Followers</a></li>
       <li><a href="">Favorites</a></li>
     </ul>
   </div>
