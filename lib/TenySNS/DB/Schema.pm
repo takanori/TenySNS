@@ -40,4 +40,12 @@ table {
     deflate qr/.+_at/ => $time_deflate;
 };
 
+table {
+    name 'favorite';
+    pk 'id';
+    columns qw/id user_id tweet_id created_at/;
+    inflate qr/.+_at/ => $time_inflate;
+    deflate qr/.+_at/ => $time_deflate;
+};
+
 1;

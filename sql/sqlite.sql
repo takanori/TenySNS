@@ -21,3 +21,10 @@ CREATE TABLE IF NOT EXISTS follow (
   followee_id INTEGER,
   created_at INTEGER
 );
+
+CREATE TABLE IF NOT EXISTS favorite (
+  id         INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id    INTEGER NOT NULL,
+  tweet_id   INTEGER NOT NULL,
+  created_at INTEGER NOT NULL
+);

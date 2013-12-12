@@ -179,4 +179,53 @@ post '/api/users/:id/follow' => sub {
     });
 };
 
+post 'api/favorite' => sub {
+    my ($c)      = @_;
+    my $user_id  = $c->session->get('user_id');
+    my $tweet_id = $c->req->param('tweet_id');
+
+    return $c->render_json( { status => 403, error => 'Not authorized' } ) unless $user_id;
+    return $c->render_json( { status => 403, error => 'Invalid query' } )  unless $tweet_id;
+
+    my $favorite = $c->db->insert(
+        favorite => {
+            user_id    => $user_id,
+            tweet_id   => $tweet_id,
+            created_at => Time::Piece->new,
+        }
+    );
+
+    $c->render_json(
+        {   status   => 200,
+            favorite => {
+                id       => $favorite->id,
+                tweet_id => $favorite->tweet_id,
+            },
+        }
+    );
+};
+
+get '/api/users/me/favorites' => sub {
+    my ( $c, $args ) = @_;
+    my $id = $c->session->get('user_id');
+
+    return $c->render_json( { status => 403, error => 'Not authorized' } ) unless $id;
+
+    my @favorites = $c->db->search_by_sql(
+        q{
+        SELECT tweet.*
+          FROM tweet
+          JOIN favorite
+            ON favorite.tweet_id = tweet.id
+         WHERE favorite.user_id  = ?
+        }, [$id]
+    );
+
+    $c->render_json(
+        {   status    => 200,
+            favorites => \@favorites,
+        }
+    );
+};
+
 1;
