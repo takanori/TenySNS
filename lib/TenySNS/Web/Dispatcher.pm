@@ -211,11 +211,18 @@ get '/api/users/me/favorites' => sub {
 
     return $c->render_json( { status => 403, error => 'Not authorized' } ) unless $id;
 
-    my @favorites = $c->db->search_by_sql(
+    my @favorites = map {
+        +{
+            id         => $_->id,
+            user_id    => $_->user_id,
+            text       => $_->text,
+            created_at => $_->created_at->epoch,
+        }
+    } $c->db->search_by_sql(
         q{
         SELECT tweet.*
           FROM tweet
-          JOIN favorite
+         INNER JOIN favorite
             ON favorite.tweet_id = tweet.id
          WHERE favorite.user_id  = ?
         }, [$id]

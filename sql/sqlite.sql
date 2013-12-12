@@ -26,5 +26,6 @@ CREATE TABLE IF NOT EXISTS favorite (
   id         INTEGER PRIMARY KEY AUTOINCREMENT,
   user_id    INTEGER NOT NULL,
   tweet_id   INTEGER NOT NULL,
-  created_at INTEGER NOT NULL
+  created_at INTEGER NOT NULL,
+  UNIQUE(user_id, tweet_id)
 );

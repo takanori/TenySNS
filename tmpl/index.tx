@@ -5,16 +5,20 @@
 <main>
 : if $user {
   <div>
-    <div role="tweet-form">
+    <form role="tweet-form">
       <textarea id="tweet-text" cols="30" rows="10"></textarea>
       <button id="tweet-button">Tweet</button>
     </form>
   </div>
-: }
 
   <h3>Tweets</h3>
   <div id="tweets">
   </div>
+
+  <h3>Favorite</h3>
+  <div id="favorites">
+  </div>
+: }
 
   <h3>Users</h3>
   <div id="users">
