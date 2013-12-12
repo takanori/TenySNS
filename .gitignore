@@ -16,3 +16,11 @@ MYMETA.yml
 /_build/
 /local/
 /.carton/
+
+cover_db
+junit_output.xml
+*.sw[po]
+*~
+.local.vimrc
+tags
+.DS_Store
