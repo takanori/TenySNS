@@ -3,8 +3,6 @@ $(function() {
     var $tweets = $('#tweets');
     var $favorites = $('#favorites');
 
-    // TODO function to add a tweet
-
     $.get(
         '/api/tweets',
         {},
@@ -38,6 +36,9 @@ $(function() {
         {},
         function (data) {
             var favorites = data.favorites;
+            if (!favorites) {
+                return;
+            }
             var len = favorites.length;
             for (var i = 0; i < len; i++) {
                 var $p = $('<p>').text(favorites[i].id + ': ' + favorites[i].text);
