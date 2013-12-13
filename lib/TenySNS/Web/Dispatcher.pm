@@ -179,7 +179,7 @@ post '/api/users/:id/follow' => sub {
     });
 };
 
-post 'api/favorite' => sub {
+post '/api/favorite' => sub {
     my ($c)      = @_;
     my $user_id  = $c->session->get('user_id');
     my $tweet_id = $c->req->param('tweet_id');

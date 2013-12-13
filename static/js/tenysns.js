@@ -73,7 +73,7 @@ $(function() {
         var tweet_text = $(this).text();
         if (window.confirm('id: ' + tweet_id + '\n' + tweet_text + '\nをお気に入りに入れますか？')) {
             $.post(
-                'api/favorite',
+                '/api/favorite',
                 { tweet_id: tweet_id, csrf_token: csrf_token },
                 function (data) {
                     var favorite = data.favorite;
