@@ -27,5 +27,7 @@ CREATE TABLE IF NOT EXISTS favorite (
   user_id    INTEGER NOT NULL,
   tweet_id   INTEGER NOT NULL,
   created_at INTEGER NOT NULL,
-  UNIQUE(user_id, tweet_id)
+  UNIQUE(user_id, tweet_id),
+  FOREIGN KEY (user_id)  REFERENCES user(id),
+  FOREIGN KEY (tweet_id) REFERENCES tweet(id)
 );
